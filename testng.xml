@@ -1,0 +1,12 @@
+<suite name="Suite1" >
+    <test name="Regression"   >
+        <classes>
+            <class name="Trello_TestScript.TC01_Product" />
+            <class name="Trello_TestScript.TC02_Cart" />
+            <class name="Trello_TestScript.TC03_Wishlist" />
+            <class name="Trello_TestScript.TC04_Filters" />
+            <class name="Trello_TestScript.TC05_Sort" />
+            <class name="Trello_TestScript.TC06_CrossBrowser" />
+        </classes>
+    </test>
+</suite>
