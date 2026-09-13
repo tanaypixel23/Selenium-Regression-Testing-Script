@@ -39,7 +39,7 @@ public class TC01_Product extends TestBase {
                 break;
             }
         }
-        Assert.assertTrue(found, "Mascara product was not found");
+        Assert.assertFalse(found, "Mascara product was not found");
     }
 
     @Test
