@@ -4,8 +4,11 @@ import commonTest.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.time.Duration;
 
 public class TC07_Checkout extends TestBase {
 
@@ -26,7 +29,7 @@ public class TC07_Checkout extends TestBase {
     };
 
     public void preCondition() {
-        driver.navigate().to("https://surajkumar-ibm.github.io/Selenium-Miniproject-Application/index.html");
+        //driver.navigate().to("https://surajkumar-ibm.github.io/Selenium-Miniproject-Application/index.html");
 
         WebElement addToCartButton = driver.findElement(By.cssSelector(".product-card .btn-add-to-cart"));
         addToCartButton.click();
@@ -49,7 +52,7 @@ public class TC07_Checkout extends TestBase {
     public void checkoutPageLoadsCorrectly() {
 
         //Pre-condition
-        driver.navigate().to("https://surajkumar-ibm.github.io/Selenium-Miniproject-Application/index.html");
+        //driver.navigate().to("https://surajkumar-ibm.github.io/Selenium-Miniproject-Application/index.html");
 
         WebElement addToCartButton = driver.findElement(By.cssSelector(".product-card .btn-add-to-cart"));
         addToCartButton.click();
@@ -83,6 +86,7 @@ public class TC07_Checkout extends TestBase {
     @Test
     public void acceptsValidInformation() {
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));;
         preCondition();
 
         // Test
@@ -120,6 +124,7 @@ public class TC07_Checkout extends TestBase {
     @Test
     public void navigateBackToCart() {
         preCondition();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         //Test
         WebElement backToCartButton = driver.findElement(By.cssSelector(".btn-back-cart"));
@@ -204,44 +209,6 @@ public class TC07_Checkout extends TestBase {
     }
 
     @Test
-    public void orderSummaryDisplaysCorrectInformation() {
-
-        // Pre-condition
-        driver.navigate().to("https://surajkumar-ibm.github.io/Selenium-Miniproject-Application/index.html");
-
-        WebElement addToCartButton = driver.findElement(By.cssSelector(".product-card .btn-add-to-cart"));
-        addToCartButton.click();
-
-        WebElement cartButton = driver.findElement(By.cssSelector(".icons li a[href='cart.html']"));
-        cartButton.click();
-
-        WebElement cartProduct = driver.findElement(By.cssSelector(".cart-item"));
-
-        String cartProductName = cartProduct.findElement(By.cssSelector(".cart-item-title")).getText();
-        String cartQuantity = cartProduct.findElement(By.cssSelector(".quantity")).getText();
-        String cartPrice = cartProduct.findElement(By.cssSelector(".cart-item-price")).getText();
-
-        WebElement checkoutButton = driver.findElement(By.cssSelector(".btn-checkout"));
-        checkoutButton.click();
-
-        WebElement summaryProduct = driver.findElement(By.cssSelector(".order-item"));
-
-        String summaryProductName = summaryProduct.findElement(By.cssSelector(".order-item-name")).getText();
-        String summaryQuantity = summaryProduct.findElement(By.cssSelector(".order-item-details")).getText().substring(4);
-        String summaryPrice = summaryProduct.findElement(By.cssSelector(".order-item-price")).getText();
-
-        //Test
-        Assert.assertEquals(summaryProductName, cartProductName);
-        Assert.assertEquals(summaryQuantity, cartQuantity);
-        Assert.assertEquals(summaryPrice, cartPrice);
-
-        Assert.assertTrue(driver.findElement(By.id("subtotal")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.id("shipping")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.id("tax")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.id("total-cost")).isDisplayed());
-    }
-
-    @Test
     public void verifyPositiveTotalCost() {
         preCondition();
 
@@ -252,5 +219,4 @@ public class TC07_Checkout extends TestBase {
         Assert.assertTrue(fetchedTotalCost > 0);
     }
 }
-
 

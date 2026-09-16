@@ -59,7 +59,7 @@ public class TC06_CrossBrowser extends TestBase {
      * Override TestBase @BeforeMethod — TC06 manages its own drivers per test,
      * so we do NOT want TestBase launching a Chrome window before each test here.
      */
-    @Override
+
     @BeforeMethod
     public void setupdriver() {
         // intentionally empty — each test below opens its own browser
@@ -68,7 +68,7 @@ public class TC06_CrossBrowser extends TestBase {
     /**
      * Override TestBase @AfterMethod — no shared driver to quit here.
      */
-    @Override
+
     @AfterMethod
     public void teardown() {
         // intentionally empty — each test quits its own driver in a finally block
@@ -236,11 +236,11 @@ public class TC06_CrossBrowser extends TestBase {
                 String msg = entry.getMessage().toLowerCase();
                 boolean isModuleError =
                         msg.contains("syntaxerror") ||
-                        msg.contains("import")      ||
-                        msg.contains("export")      ||
-                        msg.contains("cors")        ||
-                        msg.contains("failed to fetch") ||
-                        msg.contains("cannot use import");
+                                msg.contains("import")      ||
+                                msg.contains("export")      ||
+                                msg.contains("cors")        ||
+                                msg.contains("failed to fetch") ||
+                                msg.contains("cannot use import");
 
                 Assert.assertFalse(
                         isModuleError,
@@ -262,7 +262,7 @@ public class TC06_CrossBrowser extends TestBase {
         Assert.assertFalse(
                 orderItemsText.contains("Your cart is empty"),
                 "[" + browserName + "] Order summary still shows 'Your cart is empty' — " +
-                "localStorage was not read by the JS module"
+                        "localStorage was not read by the JS module"
         );
 
         System.out.println("[" + browserName + "] ES module loading verified successfully. " +
@@ -452,8 +452,8 @@ public class TC06_CrossBrowser extends TestBase {
         // browser computed. This is synchronous and works identically on all browsers.
         String gridTemplateColumns = (String) js.executeScript(
                 "var container = document.getElementById('products-container');" +
-                "if (!container) return '0';" +
-                "return window.getComputedStyle(container).gridTemplateColumns;"
+                        "if (!container) return '0';" +
+                        "return window.getComputedStyle(container).gridTemplateColumns;"
         );
 
         if (gridTemplateColumns == null || gridTemplateColumns.equals("none") || gridTemplateColumns.equals("0")) {
@@ -488,7 +488,7 @@ public class TC06_CrossBrowser extends TestBase {
             Assert.assertTrue(
                     renderedWidth <= containerWidth + 2.0, // 2px rounding tolerance
                     "[" + browserName + "][" + viewport + "] Image is wider than its container: " +
-                    renderedWidth + "px > " + containerWidth + "px"
+                            renderedWidth + "px > " + containerWidth + "px"
             );
         }
     }
@@ -508,7 +508,7 @@ public class TC06_CrossBrowser extends TestBase {
             Assert.assertTrue(
                     cardRight <= containerRight + 2.0,
                     "[" + browserName + "][" + viewport + "] Card overflows container: " +
-                    "card right=" + cardRight + "px, container right=" + containerRight + "px"
+                            "card right=" + cardRight + "px, container right=" + containerRight + "px"
             );
         }
     }
@@ -598,7 +598,7 @@ public class TC06_CrossBrowser extends TestBase {
         );
         Assert.assertEquals(flexDirection, "column",
                 "[" + browserName + "] checkout-container should be flex-direction:column at 375px " +
-                "but got: " + flexDirection
+                        "but got: " + flexDirection
         );
 
         // ── 2. Order Summary appears BELOW the form (higher Y) ────────────────
@@ -611,7 +611,7 @@ public class TC06_CrossBrowser extends TestBase {
         Assert.assertTrue(
                 summaryTop >= formBottom - 2.0,
                 "[" + browserName + "] Order Summary should appear BELOW the form at 375px. " +
-                "Form bottom=" + formBottom + " Summary top=" + summaryTop
+                        "Form bottom=" + formBottom + " Summary top=" + summaryTop
         );
         System.out.println("[" + browserName + "] Form bottom=" + formBottom +
                 ", Summary top=" + summaryTop + " — stacking verified.");
@@ -628,7 +628,7 @@ public class TC06_CrossBrowser extends TestBase {
             Assert.assertTrue(
                     inputWidth <= viewportWidth + 2.0,
                     "[" + browserName + "] Form input is wider than viewport: " +
-                    inputWidth + "px > " + viewportWidth + "px"
+                            inputWidth + "px > " + viewportWidth + "px"
             );
         }
         System.out.println("[" + browserName + "] All " + inputs.size() +
@@ -639,7 +639,7 @@ public class TC06_CrossBrowser extends TestBase {
         Assert.assertTrue(
                 scrollWidth <= viewportWidth + 2.0,
                 "[" + browserName + "] Horizontal overflow detected: scrollWidth=" +
-                scrollWidth + "px > viewportWidth=" + viewportWidth + "px"
+                        scrollWidth + "px > viewportWidth=" + viewportWidth + "px"
         );
         System.out.println("[" + browserName + "] No horizontal scroll. scrollWidth=" + scrollWidth);
 
@@ -658,7 +658,7 @@ public class TC06_CrossBrowser extends TestBase {
                 "[" + browserName + "] Place Order button is cut off on the left");
         Assert.assertTrue(btnRight <= viewportWidth + 2.0,
                 "[" + browserName + "] Place Order button overflows viewport on the right: " +
-                btnRight + "px > " + viewportWidth + "px");
+                        btnRight + "px > " + viewportWidth + "px");
         System.out.println("[" + browserName + "] Place Order button visible: left=" +
                 btnLeft + " right=" + btnRight);
 
@@ -677,7 +677,7 @@ public class TC06_CrossBrowser extends TestBase {
                 "[" + browserName + "] Back to Cart button is cut off on the left");
         Assert.assertTrue(backRight <= viewportWidth + 2.0,
                 "[" + browserName + "] Back to Cart button overflows viewport: " +
-                backRight + "px > " + viewportWidth + "px");
+                        backRight + "px > " + viewportWidth + "px");
         System.out.println("[" + browserName + "] Back to Cart button visible: left=" +
                 backLeft + " right=" + backRight);
 

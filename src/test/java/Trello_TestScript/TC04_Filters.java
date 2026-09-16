@@ -58,7 +58,7 @@ public class TC04_Filters extends TestBase {
      * message are present (backend has responded).
      */
     private void goToProductsPage() {
-        clickUntilLoaded(PRODUCTS_NAV_LINK);
+        driver.findElement(PRODUCTS_NAV_LINK).click();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         wait.until(d -> !d.findElements(PRODUCT_CARDS).isEmpty()
                 || !d.findElements(NO_PRODUCTS).isEmpty());
@@ -406,35 +406,31 @@ public class TC04_Filters extends TestBase {
      * the Products page and that matching products are displayed after Apply.
      */
     @Test
-public void applyFiltersAfterScrolling() throws InterruptedException {
-    goToProductsPage();
+    public void applyFiltersAfterScrolling() throws InterruptedException {
+        goToProductsPage();
+        selectFilter(PRICE_0_50);
+        selectFilter(RATING_4_AND_ABOVE);
 
-    JavascriptExecutor js = (JavascriptExecutor) driver;
-    js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+        Assert.assertTrue(driver.findElement(PRICE_0_50).isSelected(),
+                "Price $0-$50 was not selected after scrolling.");
 
-    selectFilter(PRICE_0_50);
-    selectFilter(RATING_4_AND_ABOVE);
+        Assert.assertTrue(driver.findElement(RATING_4_AND_ABOVE).isSelected(),
+                "Rating 4+ was not selected after scrolling.");
 
-    Assert.assertTrue(driver.findElement(PRICE_0_50).isSelected(),
-            "Price $0-$50 was not selected after scrolling.");
+        driver.findElement(APPLY_BUTTON).click();
+        Thread.sleep(2000);
 
-    Assert.assertTrue(driver.findElement(RATING_4_AND_ABOVE).isSelected(),
-            "Rating 4+ was not selected after scrolling.");
+        for (WebElement card : driver.findElements(PRODUCT_CARDS)) {
+            double price = parsePrice(card.findElement(PRODUCT_PRICE_FINAL).getText());
+            double rating = parseRating(card.findElement(RATING_VALUE).getText());
 
-    driver.findElement(APPLY_BUTTON).click();
-    Thread.sleep(2000);
+            Assert.assertTrue(price >= 0 && price <= 50,
+                    "Product price $" + price + " is outside the $0-$50 range.");
 
-    for (WebElement card : driver.findElements(PRODUCT_CARDS)) {
-        double price = parsePrice(card.findElement(PRODUCT_PRICE_FINAL).getText());
-        double rating = parseRating(card.findElement(RATING_VALUE).getText());
-
-        Assert.assertTrue(price >= 0 && price <= 50,
-                "Product price $" + price + " is outside the $0-$50 range.");
-
-        Assert.assertTrue(rating >= 4.0,
-                "Product rating " + rating + " is below 4.0.");
+            Assert.assertTrue(rating >= 4.0,
+                    "Product rating " + rating + " is below 4.0.");
+        }
     }
-}
     /**
      * Verify that selecting Beauty and another category displays products from
      * either selected category and excludes unselected categories.
@@ -544,9 +540,9 @@ public void applyFiltersAfterScrolling() throws InterruptedException {
         private String escapeHtml(String raw) {
             if (raw == null) return "";
             return raw.replace("&", "&amp;")
-                      .replace("<", "&lt;")
-                      .replace(">", "&gt;")
-                      .replace("\"", "&quot;");
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;");
         }
 
         // ── report writer ────────────────────────────────────────────────────
@@ -562,71 +558,71 @@ public void applyFiltersAfterScrolling() throws InterruptedException {
 
             StringBuilder sb = new StringBuilder();
             sb.append("<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n")
-              .append("<meta charset=\"UTF-8\"/>\n")
-              .append("<title>").append(suiteName).append(" – Test Report</title>\n")
-              .append("<style>\n")
-              .append("  body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f9;color:#1f2328}\n")
-              .append("  header{background:#1a56db;color:#fff;padding:20px 32px}\n")
-              .append("  header h1{margin:0;font-size:1.5rem}\n")
-              .append("  header p{margin:4px 0 0;font-size:.85rem;opacity:.85}\n")
-              .append("  .summary{display:flex;gap:16px;padding:20px 32px}\n")
-              .append("  .card{flex:1;border-radius:8px;padding:16px 20px;text-align:center;color:#fff}\n")
-              .append("  .card h2{margin:0;font-size:2rem}\n")
-              .append("  .card p{margin:4px 0 0;font-size:.85rem}\n")
-              .append("  .total{background:#3b82f6}.pass{background:#16a34a}\n")
-              .append("  .fail{background:#dc2626}.skip{background:#d97706}\n")
-              .append("  .section{padding:0 32px 32px}\n")
-              .append("  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}\n")
-              .append("  th{background:#1a56db;color:#fff;text-align:left;padding:12px 16px;font-size:.85rem}\n")
-              .append("  td{padding:11px 16px;font-size:.875rem;border-bottom:1px solid #e5e7eb;vertical-align:top}\n")
-              .append("  tr:last-child td{border-bottom:none}\n")
-              .append("  tr:hover td{background:#f0f4ff}\n")
-              .append("  .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:600}\n")
-              .append("  .PASS{background:#dcfce7;color:#15803d}\n")
-              .append("  .FAIL{background:#fee2e2;color:#b91c1c}\n")
-              .append("  .SKIP{background:#fef3c7;color:#b45309}\n")
-              .append("  .detail{font-size:.8rem;color:#6b7280;margin-top:4px;word-break:break-word}\n")
-              .append("  footer{text-align:center;padding:16px;font-size:.78rem;color:#9ca3af;border-top:1px solid #e5e7eb}\n")
-              .append("</style>\n</head>\n<body>\n")
+                    .append("<meta charset=\"UTF-8\"/>\n")
+                    .append("<title>").append(suiteName).append(" – Test Report</title>\n")
+                    .append("<style>\n")
+                    .append("  body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:#f4f6f9;color:#1f2328}\n")
+                    .append("  header{background:#1a56db;color:#fff;padding:20px 32px}\n")
+                    .append("  header h1{margin:0;font-size:1.5rem}\n")
+                    .append("  header p{margin:4px 0 0;font-size:.85rem;opacity:.85}\n")
+                    .append("  .summary{display:flex;gap:16px;padding:20px 32px}\n")
+                    .append("  .card{flex:1;border-radius:8px;padding:16px 20px;text-align:center;color:#fff}\n")
+                    .append("  .card h2{margin:0;font-size:2rem}\n")
+                    .append("  .card p{margin:4px 0 0;font-size:.85rem}\n")
+                    .append("  .total{background:#3b82f6}.pass{background:#16a34a}\n")
+                    .append("  .fail{background:#dc2626}.skip{background:#d97706}\n")
+                    .append("  .section{padding:0 32px 32px}\n")
+                    .append("  table{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.08)}\n")
+                    .append("  th{background:#1a56db;color:#fff;text-align:left;padding:12px 16px;font-size:.85rem}\n")
+                    .append("  td{padding:11px 16px;font-size:.875rem;border-bottom:1px solid #e5e7eb;vertical-align:top}\n")
+                    .append("  tr:last-child td{border-bottom:none}\n")
+                    .append("  tr:hover td{background:#f0f4ff}\n")
+                    .append("  .badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:.78rem;font-weight:600}\n")
+                    .append("  .PASS{background:#dcfce7;color:#15803d}\n")
+                    .append("  .FAIL{background:#fee2e2;color:#b91c1c}\n")
+                    .append("  .SKIP{background:#fef3c7;color:#b45309}\n")
+                    .append("  .detail{font-size:.8rem;color:#6b7280;margin-top:4px;word-break:break-word}\n")
+                    .append("  footer{text-align:center;padding:16px;font-size:.78rem;color:#9ca3af;border-top:1px solid #e5e7eb}\n")
+                    .append("</style>\n</head>\n<body>\n")
 
-              // ── header ───────────────────────────────────────────────────
-              .append("<header>\n")
-              .append("  <h1>").append(escapeHtml(suiteName)).append(" – Filter Test Report</h1>\n")
-              .append("  <p>Started: ").append(startTime)
-              .append(" &nbsp;|&nbsp; Finished: ").append(finishTime).append("</p>\n")
-              .append("</header>\n")
+                    // ── header ───────────────────────────────────────────────────
+                    .append("<header>\n")
+                    .append("  <h1>").append(escapeHtml(suiteName)).append(" – Filter Test Report</h1>\n")
+                    .append("  <p>Started: ").append(startTime)
+                    .append(" &nbsp;|&nbsp; Finished: ").append(finishTime).append("</p>\n")
+                    .append("</header>\n")
 
-              // ── summary cards ────────────────────────────────────────────
-              .append("<div class=\"summary\">\n")
-              .append("  <div class=\"card total\"><h2>").append(total).append("</h2><p>Total</p></div>\n")
-              .append("  <div class=\"card pass\"><h2>").append(passed).append("</h2><p>Passed</p></div>\n")
-              .append("  <div class=\"card fail\"><h2>").append(failed).append("</h2><p>Failed</p></div>\n")
-              .append("  <div class=\"card skip\"><h2>").append(skipped).append("</h2><p>Skipped</p></div>\n")
-              .append("</div>\n")
+                    // ── summary cards ────────────────────────────────────────────
+                    .append("<div class=\"summary\">\n")
+                    .append("  <div class=\"card total\"><h2>").append(total).append("</h2><p>Total</p></div>\n")
+                    .append("  <div class=\"card pass\"><h2>").append(passed).append("</h2><p>Passed</p></div>\n")
+                    .append("  <div class=\"card fail\"><h2>").append(failed).append("</h2><p>Failed</p></div>\n")
+                    .append("  <div class=\"card skip\"><h2>").append(skipped).append("</h2><p>Skipped</p></div>\n")
+                    .append("</div>\n")
 
-              // ── results table ─────────────────────────────────────────────
-              .append("<div class=\"section\">\n")
-              .append("<table>\n<thead><tr>")
-              .append("<th>#</th><th>Test Method</th><th>Status</th>")
-              .append("<th>Duration</th><th>Details</th>")
-              .append("</tr></thead>\n<tbody>\n");
+                    // ── results table ─────────────────────────────────────────────
+                    .append("<div class=\"section\">\n")
+                    .append("<table>\n<thead><tr>")
+                    .append("<th>#</th><th>Test Method</th><th>Status</th>")
+                    .append("<th>Duration</th><th>Details</th>")
+                    .append("</tr></thead>\n<tbody>\n");
 
             int idx = 1;
             for (Row row : rows) {
                 sb.append("<tr>\n")
-                  .append("  <td>").append(idx++).append("</td>\n")
-                  .append("  <td>").append(escapeHtml(row.name)).append("</td>\n")
-                  .append("  <td><span class=\"badge ").append(row.status).append("\">")
-                  .append(row.status).append("</span></td>\n")
-                  .append("  <td>").append(row.duration).append("</td>\n")
-                  .append("  <td>")
-                  .append(row.detail.isEmpty() ? "–" : "<span class=\"detail\">" + row.detail + "</span>")
-                  .append("</td>\n</tr>\n");
+                        .append("  <td>").append(idx++).append("</td>\n")
+                        .append("  <td>").append(escapeHtml(row.name)).append("</td>\n")
+                        .append("  <td><span class=\"badge ").append(row.status).append("\">")
+                        .append(row.status).append("</span></td>\n")
+                        .append("  <td>").append(row.duration).append("</td>\n")
+                        .append("  <td>")
+                        .append(row.detail.isEmpty() ? "–" : "<span class=\"detail\">" + row.detail + "</span>")
+                        .append("</td>\n</tr>\n");
             }
 
             sb.append("</tbody>\n</table>\n</div>\n")
-              .append("<footer>Generated by TC04_Filters &nbsp;|&nbsp; Mini Mart Regression Suite</footer>\n")
-              .append("</body>\n</html>");
+                    .append("<footer>Generated by TC04_Filters &nbsp;|&nbsp; Mini Mart Regression Suite</footer>\n")
+                    .append("</body>\n</html>");
 
             // ── write to disk ─────────────────────────────────────────────
             java.io.File outDir = new java.io.File("test-output");

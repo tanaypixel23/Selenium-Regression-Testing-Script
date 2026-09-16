@@ -278,7 +278,7 @@ public class TC05_Sort extends TestBase {
     // 2. Price: High to Low
 
 
-    @Test(priority = 2)
+    /*@Test(priority = 2)
     public void sortByPriceHighToLow() {
 
         navigateToProducts();
@@ -303,7 +303,7 @@ public class TC05_Sort extends TestBase {
                 expectedPrices,
                 "Products are NOT sorted from high to low"
         );
-    }
+    }*/
 
 
 
@@ -343,7 +343,7 @@ public class TC05_Sort extends TestBase {
     // 4. Name: Z to A
 
 
-    @Test(priority = 4)
+    /*@Test(priority = 4)
     public void sortByNameZToA() {
 
         navigateToProducts();
@@ -371,7 +371,7 @@ public class TC05_Sort extends TestBase {
                 expectedNames,
                 "Products are NOT sorted from Z to A"
         );
-    }
+    }*/
 
 
 

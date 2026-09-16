@@ -26,7 +26,7 @@ import java.util.List;
  *   - TestBase.@BeforeMethod  → starts ChromeDriver, maximises window
  *   - TestBase.@AfterMethod   → calls driver.quit()
  *   - TestBase.driver         → public static WebDriver
- *   - TestBase.wait 		   → public static WebDriverWait 
+ *   - TestBase.wait 		   → public static WebDriverWait
  *
  * Test cases follow Given / When / Then (GWT) structure via inline comments.
  *
@@ -41,29 +41,28 @@ import java.util.List;
  */
 
 public class TC03_Wishlist extends TestBase {
-	
+
     // ── Locators ──────────────────────────────────────────────────────────────
-    
     // Header / nav
     private static final By PRODUCT_PAGE       = By.cssSelector("li a[href=\"products.html\"]");
     private static final By WISHLIST_PAGE      = By.cssSelector("li a[href=\"favorites.html\"]");
     private static final By WISHLIST_BADGE     = By.id("fav-count");
     private static final By CART_BADGE         = By.cssSelector("#cart-counter");
-    
 
-//	// Product listing page
-	private static final By VALIDATOR_PRODUCT_PAGE = By.className("products-main-container");
+
+    //	// Product listing page
+    private static final By VALIDATOR_PRODUCT_PAGE = By.className("products-main-container");
     private static final By PRODUCT_CARDS          = By.className("product-card");
     private static final By PRODUCT_NAME           = By.cssSelector("h3.product-title");
-//    private static final By PRODUCT_PRICE        = By.cssSelector(".product-price-final, .product-card-price, [class*='price']"); --> priority is not there so leaving
-    private static final By PRODUCT_PRICE          = By.className("product-price-final"); 
+    //    private static final By PRODUCT_PRICE        = By.cssSelector(".product-price-final, .product-card-price, [class*='price']"); --> priority is not there so leaving
+    private static final By PRODUCT_PRICE          = By.className("product-price-final");
     private static final By PRODUCT_IMAGE          = By.className("product-image-container");
     private static final By HEART_BTN              = By.className("btn-favorite");
     private static final By NEXT_BTN               = By.id("next-btn");
     private static final By PREV_BTN               = By.id("prev-btn");
     private static final By CART_BTN               = By.cssSelector(".btn-add-to-cart, button[class*='cart']");
-    
-//    // Wishlist page / section
+
+    //    // Wishlist page / section
     private static final By VALIDATOR_WISHLIST_PAGE  = By.className("favorites-main");
     private static final By WISHLIST_ITEMS           = By.className("product-card");
     private static final By EMPTY_STATE              = By.className("empty-favorites");
@@ -74,30 +73,30 @@ public class TC03_Wishlist extends TestBase {
     private static final By ITEM_NAME                = By.cssSelector("div.product-title");
     private static final By ITEM_PRICE               = By.cssSelector(".product-price-final, .product-card-price, [class*='price']");
     private static final By ITEM_IMAGE               = By.cssSelector(".product-image, img");
-    
-    //Filter 
+
+    //Filter
     private static final By APPLY_FILTER_BTN = By.id("apply-filters");
     private static final By CLEAR_FILTER     = By.id("clear-filters");
     private static final By FILTER_CATEGORY  = By.cssSelector("input[type=\"checkbox\"]");
-    
+
     //Single Product Details
     private static final By SINGLE_PRODUCT_PAGE_INFO = By.className("product-page-info");
-    
-    //Instant Popup 
+
+    //Instant Popup
     private static final By TOGGLE_TEXT = By.cssSelector(".toast.show");
-    
+
     // ══════════════════════════════════════════════════════════════════════════
     // Private helpers — use TestBase.driver directly (no driver management here)
     // ══════════════════════════════════════════════════════════════════════════
 
     /** Navigates to the PRODUCT target site using the driver And Assert to valid if the user is on product site or not. */
     private void goToProductSite() throws InterruptedException {
-    	driver.findElement(PRODUCT_PAGE).click();
-		Assert.assertTrue(driver.findElement(VALIDATOR_PRODUCT_PAGE).isDisplayed(), "User should be on product page.");
-		
+        driver.findElement(PRODUCT_PAGE).click();
+        Assert.assertTrue(driver.findElement(VALIDATOR_PRODUCT_PAGE).isDisplayed(), "User should be on product page.");
+
         //Thread.sleep(1500);
     }
-    
+
     /** Returns the integer on the wishlist heart badge (0 if absent). */
     private int wishlistBadgeCount() {
         try {
@@ -118,13 +117,13 @@ public class TC03_Wishlist extends TestBase {
     private void clickHeartOnCard(int index) {
         WebElement card  = getProductCards().get(index);
         WebElement heart = card.findElement(HEART_BTN);
-        
-        
+
+
 //        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block:'center'});", heart);
-        
+
         // for direct method
 //        wait.until(ExpectedConditions.elementToBeClickable(driver.findElements(HEART_BTN).get(index))).click();
-        
+
         wait.until(ExpectedConditions.elementToBeClickable(heart)).click();
     }
 
@@ -136,31 +135,31 @@ public class TC03_Wishlist extends TestBase {
         List<String> class_name = Arrays.asList(
                 heart.getAttribute("class").trim().split("\\s+")
         );
-        		
+
         return class_name.contains("active");
     }
-    
+
     /**
      * Opens the wishlist page via the nav icon.
-    */
+     */
     private void openWishlistPage() throws InterruptedException {
         wait.until(ExpectedConditions.elementToBeClickable(
                 driver.findElement(WISHLIST_PAGE)
         )).click();
-        
+
         //Thread.sleep(1000);
-        wait.until(d -> 
-        		!d.findElements(WISHLIST_ITEMS).isEmpty()
-                || !d.findElements(EMPTY_STATE).isEmpty());
-        
+        wait.until(d ->
+                !d.findElements(WISHLIST_ITEMS).isEmpty()
+                        || !d.findElements(EMPTY_STATE).isEmpty());
+
         Assert.assertTrue(driver.findElement(VALIDATOR_WISHLIST_PAGE).isDisplayed(), "User should be on Wishlist page.");
     }
-    
+
     /** Returns all wishlist item rows in the DOM. */
     private List<WebElement> getWishlistItems() {
         return driver.findElements(WISHLIST_ITEMS);
     }
-    
+
     /** Returns the product name text on the card at index. */
     private String cardName(int index) {
         return getProductCards().get(index).findElement(PRODUCT_NAME).getText().trim();
@@ -172,7 +171,7 @@ public class TC03_Wishlist extends TestBase {
     }
 
     private String cardImage(int index) {
-    	return getProductCards().get(index).findElement(PRODUCT_IMAGE).getText().trim();
+        return getProductCards().get(index).findElement(PRODUCT_IMAGE).getText().trim();
     }
 
     /** Returns the integer on the cart nav badge (0 if absent). */
@@ -194,36 +193,36 @@ public class TC03_Wishlist extends TestBase {
     private String wishlistItemPrice(int index) {
         return getWishlistItems().get(index).findElement(ITEM_PRICE).getText().trim();
     }
-    
+
     /** Returns the Image text on the wishlist item at 0-based index. */
     private String wishlistItemImage(int index) {
         return getWishlistItems().get(index).findElement(ITEM_IMAGE).getText().trim();
     }
-    
+
     /** Returns the tooltip message shown on the website for few seconds */
     private String tooltipMessage() {
-    	return driver.findElement(TOGGLE_TEXT).getText().trim();
+        return driver.findElement(TOGGLE_TEXT).getText().trim();
     }
-    
+
     /** Return True if the product is available on wishlist page*/
     private boolean wishlistNameChecker(String product_name) {
-    	
-    	for(var item: getWishlistItems()) {
-    		if(item.findElement(ITEM_NAME).getText().trim().equalsIgnoreCase(product_name)) {
-    			return true;
-    		}
-    	}
-    	
-    	return false;
+
+        for(var item: getWishlistItems()) {
+            if(item.findElement(ITEM_NAME).getText().trim().equalsIgnoreCase(product_name)) {
+                return true;
+            }
+        }
+
+        return false;
     }
-    
+
     /** Clicks remove on the wishlist item at index and waits for the DOM to settle. */
     private void removeWishlistItem(int index) throws InterruptedException {
         WebElement btn = getWishlistItems().get(index).findElement(ITEM_REMOVE_BTN);
         wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
         //Thread.sleep(1000);
     }
-    
+
     /** Returns true if the product image src is non-empty on the item at index. */
     private boolean imageLoaded(int index) {
         String src = getWishlistItems().get(index).findElement(ITEM_IMAGE).getAttribute("src");
@@ -232,84 +231,84 @@ public class TC03_Wishlist extends TestBase {
 
     /** Add product to cart till the end*/
     private int addProductToWishlist(int number) {
-    	int counter = 0;
-    	
-    	while(true) {
-			for(var card: getProductCards()) {
-				if (number > 0 && counter >= number) {
-					return counter;
-				}
-				
-				WebElement heart = card.findElement(HEART_BTN);
-				wait.until(ExpectedConditions.elementToBeClickable(heart)).click();
-				++counter;
-			}
-		
-			WebElement next_btn = driver.findElement(NEXT_BTN);
-			boolean is_disabled = next_btn.getAttribute("disabled") != null;
+        int counter = 0;
 
-	        if (is_disabled) {
-	            break;
-	        }
-			
-			wait.until(ExpectedConditions.elementToBeClickable(next_btn)).click();
-    	}
-    	
-    	return counter;
+        while(true) {
+            for(var card: getProductCards()) {
+                if (number > 0 && counter >= number) {
+                    return counter;
+                }
+
+                WebElement heart = card.findElement(HEART_BTN);
+                wait.until(ExpectedConditions.elementToBeClickable(heart)).click();
+                ++counter;
+            }
+
+            WebElement next_btn = driver.findElement(NEXT_BTN);
+            boolean is_disabled = next_btn.getAttribute("disabled") != null;
+
+            if (is_disabled) {
+                break;
+            }
+
+            wait.until(ExpectedConditions.elementToBeClickable(next_btn)).click();
+        }
+
+        return counter;
     }
-    
+
     /** Clicks Add-to-Cart on the wishlist item at index. */
     private void addToCartFromWishlist(int index) throws InterruptedException {
         WebElement btn = getWishlistItems().get(index).findElement(ITEM_ADD_TO_CART_BTN);
         wait.until(ExpectedConditions.elementToBeClickable(btn)).click();
         //Thread.sleep(800);
     }
-    
+
     /** Add product to the cart from the product page*/
     private void addProductToCart(int index) throws InterruptedException{
-    	WebElement card  = getProductCards().get(index);
+        WebElement card  = getProductCards().get(index);
         WebElement cart = card.findElement(CART_BTN);
-      
+
         wait.until(ExpectedConditions.elementToBeClickable(cart)).click();
     }
-    
+
     /** Clears localStorage via JS and reloads.. */
     private void clearStorageAndReload() throws InterruptedException {
         ((JavascriptExecutor) driver).executeScript("localStorage.clear();");
         driver.navigate().refresh();
         //Thread.sleep(1500);
     }
-    
+
     private List<WebElement> returnFilterCategoryElements() {
-    	return driver.findElements(FILTER_CATEGORY);
+        return driver.findElements(FILTER_CATEGORY);
     }
-    
+
     /** Apply Filter for the product*/
     private void selectApplyFilterToProduct(int index) {
-    	WebElement category = returnFilterCategoryElements().get(index);
-    	wait.until(ExpectedConditions.elementToBeClickable(category)).click();
-		Assert.assertTrue(category.isSelected(), "Failed to Add Item from "+category.getAttribute("value"));
-		
-		wait.until(ExpectedConditions.elementToBeClickable(APPLY_FILTER_BTN)).click();
+        WebElement category = returnFilterCategoryElements().get(index);
+        wait.until(ExpectedConditions.elementToBeClickable(category)).click();
+        Assert.assertTrue(category.isSelected(), "Failed to Add Item from "+category.getAttribute("value"));
+
+        wait.until(ExpectedConditions.elementToBeClickable(APPLY_FILTER_BTN)).click();
     }
-    
+
     /** Clear Filter for the product*/
     private void clearFilterOfProduct() {
-    	wait.until(ExpectedConditions.elementToBeClickable(CLEAR_FILTER)).click();
+        wait.until(ExpectedConditions.elementToBeClickable(CLEAR_FILTER)).click();
     }
-    
+
     /** Add one product from each filter category to wishlist */
     private void addOneProductFromEachCategory(int number) {
-    	
-    	int productsToAdd = (number == 0) ? 1 : number;
-    	for(int i=0;i<returnFilterCategoryElements().size();i++) {
-    		selectApplyFilterToProduct(i);
-    		addProductToWishlist(productsToAdd);
-    		clearFilterOfProduct();
-    	}
-    	
+
+        int productsToAdd = (number == 0) ? 1 : number;
+        for(int i=0;i<returnFilterCategoryElements().size();i++) {
+            selectApplyFilterToProduct(i);
+            addProductToWishlist(productsToAdd);
+            clearFilterOfProduct();
+        }
+
     }
-    
+
     // ══════════════════════════════════════════════════════════════════════════
     //  GROUP 1 — Add to Wishlist  (TC-W01 to TC-W04)
     // ══════════════════════════════════════════════════════════════════════════
@@ -324,8 +323,8 @@ public class TC03_Wishlist extends TestBase {
      */
     @Test(description = "TC-W01: Add a single product to the wishlist")
     public void TC_W01_addSingleProductToWishlist() throws InterruptedException {
-        
-    	// GIVEN — The user is on the product listing page and the wishlist is empty
+
+        // GIVEN — The user is on the product listing page and the wishlist is empty
         goToProductSite();
         int initial_counter = wishlistBadgeCount();
         assertTrue(initial_counter==0, "Wishlist Should be Empty before Adding the Cart");
@@ -351,8 +350,8 @@ public class TC03_Wishlist extends TestBase {
      * GIVEN  The user is on the product listing page and wishlist is empty
      * WHEN   The user clicks the wishlist icon on 3 different products one by one
      * THEN   All 3 products appear in the wishlist
-   			  The wishlist counter badge shows 3
-			  Each product retains its name, price and image in the wishlist
+     The wishlist counter badge shows 3
+     Each product retains its name, price and image in the wishlist
      */
     @Test(description = "TC-W02: Add multiple different products to the wishlist")
     public void TC_W02_addMultipleProductsToWishlist() throws InterruptedException {
@@ -361,17 +360,17 @@ public class TC03_Wishlist extends TestBase {
         String name0 = cardName(0);
         String price0 = cardPrice(0);
         String image0 = cardImage(0);
-        
-        
+
+
         String name1 = cardName(1);
         String price1 = cardPrice(1);
         String image1 = cardImage(1);
-        
+
         String name2 = cardName(2);
         String price2 = cardPrice(2);
         String image2 = cardImage(2);
-        
-        
+
+
         // WHEN
         clickHeartOnCard(0);
         //Thread.sleep(500);
@@ -399,14 +398,14 @@ public class TC03_Wishlist extends TestBase {
         Assert.assertEquals(wishlistItemImage(2), image2, "TC-W02: Third wishlist item image should match the product card image");
     }
 
-    
+
     /**
-     * TC-W03 — [EDGE] Adding the same product twice 
-	   * must not duplicate it.
+     * TC-W03 — [EDGE] Adding the same product twice
+     * must not duplicate it.
      *
      * GIVEN  Product "X" is already in the wishlist
      * WHEN   The user clicks the wishlist icon on product "X" again
-     * THEN   Product "X" is NOT duplicated in the wishlist 
+     * THEN   Product "X" is NOT duplicated in the wishlist
      * The wishlist counter does not increment again
      * The icon toggles back to unfilled state (acts as remove), OR a tooltip "Already in wishlist" is shown
      */
@@ -425,13 +424,13 @@ public class TC03_Wishlist extends TestBase {
 
         //Then
         Assert.assertFalse(isWishlisted(0), "TC-W03: Item should not be present on the wishlist cart.");
-        
+
         openWishlistPage();
         Assert.assertTrue(getWishlistItems().size() <= 1, "TC-W03: Product must NOT be duplicated after clicking heart twice");
         Assert.assertFalse(wishlistBadgeCount() > countAfterFirst, "TC-W03: Badge must not exceed count after first click");
         Assert.assertTrue(tooltip_message.contains("Removed") || tooltip_message.contains("Already"), "TC-W03: Item must show a tooltip \"Already in wishlist\" or removed the Item.");
-        
-        
+
+
     }
 
     /**
@@ -448,18 +447,18 @@ public class TC03_Wishlist extends TestBase {
         // GIVEN
         goToProductSite();
         getProductCards().get(0).click();
-        
+
         int badgeBefore = wishlistBadgeCount();
         //Thread.sleep(1500);
 
         // WHEN
-        WebElement wish_btn = driver.findElement(HEART_BTN); 
+        WebElement wish_btn = driver.findElement(HEART_BTN);
         String product_name = wait.until(ExpectedConditions.elementToBeClickable(
-        		driver.findElement(By.cssSelector("h2.product-page-title"))
-        		)).getText().trim();
+                driver.findElement(By.cssSelector("h2.product-page-title"))
+        )).getText().trim();
         wait.until(ExpectedConditions.elementToBeClickable(wish_btn)).click();
-        
-        
+
+
         //Thread.sleep(800);
 
         // THEN — badge incremented
@@ -468,12 +467,12 @@ public class TC03_Wishlist extends TestBase {
         // THEN — button active
         String cls = wish_btn.getAttribute("class");
         Assert.assertTrue(cls.contains("active"), "TC-W04: Wishlist button should show active state on the detail page");
-        
+
         //Then - Check product on wishlist
         openWishlistPage();
         assertTrue(wishlistNameChecker(product_name), "TC-W04: Wishlist page should contain the added product");
     }
-    
+
 
     // ══════════════════════════════════════════════════════════════════════════
     //  GROUP 2 — Remove from Wishlist  (TC-W05 to TC-W06)
@@ -499,7 +498,7 @@ public class TC03_Wishlist extends TestBase {
 
         // WHEN
         removeWishlistItem(0);
-    
+
         // THEN
         Assert.assertEquals(getWishlistItems().size(), 0, "TC-W05: Wishlist should be empty after removal");
         Assert.assertEquals(wishlistBadgeCount(), 0, "TC-W05: Badge should show 0 after removal");
@@ -648,7 +647,7 @@ public class TC03_Wishlist extends TestBase {
      * GIVEN  The wishlist contains product "B" and the cart is empty
      * WHEN   The user clicks "Add to Cart" on product "B" from within the wishlist
      * THEN   Product "B" is added to the cart (cart counter increments)
-     *        The wishlist may optionally retain or remove product "B" (behaviour is consistent)  
+     *        The wishlist may optionally retain or remove product "B" (behaviour is consistent)
      */
     @Test(description = "TC-W11: Add to cart from wishlist")
     public void TC_W11_addToCartFromWishlist() throws InterruptedException {
@@ -674,30 +673,31 @@ public class TC03_Wishlist extends TestBase {
      * WHEN   The user clicks "Add to Cart" on product "C" from the wishlist
      * THEN   Cart quantity for product "C" increments to 2
      *        No orphan or ghost cart entries are created
+
+     @Test(description = "TC-W12 [EDGE]: Add to cart from wishlist when item already in cart")
+     public void TC_W12_addToCartFromWishlistAlreadyInCart() throws InterruptedException {
+     // GIVEN — add to wishlist then to cart once
+     goToProductSite();
+     clickHeartOnCard(0);
+     addProductToCart(0);
+
+     Assert.assertTrue(cartBadgeCount()==1, "TC-W12: Pre-condition: Item should be in Cart");
+     Assert.assertTrue(wishlistBadgeCount()==1, "TC-W12: Pre-condition: Item should be in Wishlist");
+
+     int cartCountAfterFirst = cartBadgeCount();
+     //Thread.sleep(600);
+
+     //When
+     openWishlistPage();
+     addToCartFromWishlist(0);
+
+
+     // THEN
+     Assert.assertTrue(cartBadgeCount() >= cartCountAfterFirst , "TC-W12: Cart count must not decrease after second add-to-cart from wishlist");
+     }
      */
-    @Test(description = "TC-W12 [EDGE]: Add to cart from wishlist when item already in cart")
-    public void TC_W12_addToCartFromWishlistAlreadyInCart() throws InterruptedException {
-        // GIVEN — add to wishlist then to cart once
-        goToProductSite();
-        clickHeartOnCard(0);
-        addProductToCart(0);
-        
-        Assert.assertTrue(cartBadgeCount()==1, "TC-W12: Pre-condition: Item should be in Cart");
-        Assert.assertTrue(wishlistBadgeCount()==1, "TC-W12: Pre-condition: Item should be in Wishlist");
-        
-        int cartCountAfterFirst = cartBadgeCount();
-        //Thread.sleep(600);
-        
-        //When
-        openWishlistPage();
-        addToCartFromWishlist(0);
 
 
-        // THEN
-        Assert.assertTrue(cartBadgeCount() >= cartCountAfterFirst , "TC-W12: Cart count must not decrease after second add-to-cart from wishlist");
-    }
-
-  
 
     // ══════════════════════════════════════════════════════════════════════════
     //  GROUP 5 — Persistence & State  (TC-W13 to TC-W15)
@@ -786,7 +786,7 @@ public class TC03_Wishlist extends TestBase {
         WebElement product_info = wait.until(ExpectedConditions.elementToBeClickable(SINGLE_PRODUCT_PAGE_INFO));
         String wish_btn = product_info.findElement(HEART_BTN).getAttribute("class");
         Assert.assertTrue(wish_btn.contains("active"), "TC-W15: Wishlist button on detail page should show active state for a wishlisted product");
-        
+
     }
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -800,26 +800,27 @@ public class TC03_Wishlist extends TestBase {
      * WHEN   The user clicks on product "F"'s name or image in the wishlist
      * THEN   The user is taken to product "F"'s detail page
      *        The correct product information is displayed on the detail page
+
+     @Test(description = "TC-W16: Clicking a wishlist item navigates to product detail page")
+     public void TC_W16_clickingWishlistItemNavigatesToDetail() throws InterruptedException {
+     // GIVEN
+     goToProductSite();
+     clickHeartOnCard(0);
+     //Thread.sleep(600);
+     openWishlistPage();
+
+     // WHEN
+     String urlBefore = driver.getCurrentUrl();
+     WebElement link  = getWishlistItems().get(0);
+     link.click();
+     //Thread.sleep(1500);
+
+     // THEN
+     boolean urlChanged     = !driver.getCurrentUrl().equals(urlBefore);
+     boolean detailRendered = !driver.findElements(SINGLE_PRODUCT_PAGE_INFO).isEmpty();
+     Assert.assertTrue(urlChanged || detailRendered, "TC-W16: Clicking wishlist item should navigate to product detail page");
+     }
      */
-    @Test(description = "TC-W16: Clicking a wishlist item navigates to product detail page")
-    public void TC_W16_clickingWishlistItemNavigatesToDetail() throws InterruptedException {
-        // GIVEN
-        goToProductSite();
-        clickHeartOnCard(0);
-        //Thread.sleep(600);
-        openWishlistPage();
-
-        // WHEN
-        String urlBefore = driver.getCurrentUrl();
-        WebElement link  = getWishlistItems().get(0);
-        link.click();
-        //Thread.sleep(1500);
-
-        // THEN
-        boolean urlChanged     = !driver.getCurrentUrl().equals(urlBefore);
-        boolean detailRendered = !driver.findElements(SINGLE_PRODUCT_PAGE_INFO).isEmpty();
-        Assert.assertTrue(urlChanged || detailRendered, "TC-W16: Clicking wishlist item should navigate to product detail page");
-    }
 
     /**
      * TC-W17 — Wishlist items are correctly filtered when product category filter is appliedr.
@@ -843,11 +844,11 @@ public class TC03_Wishlist extends TestBase {
         // WHEN — simulate filter via page reload using TestBase.driver
         goToProductSite();
         selectApplyFilterToProduct(0);
-        
+
         //Then
         Assert.assertTrue(isWishlisted(0), "TC-W17: Product should show filled state After Filter Application.");
         Assert.assertEquals(wishlistBadgeCount(), countBefore, "TC-W17: Wishlist counter must not change after a page filter");
-        
+
         clearFilterOfProduct();
         Assert.assertTrue(isWishlisted(0), "TC-W17: Product should show filled state After clear filter.");
     }
@@ -932,7 +933,7 @@ public class TC03_Wishlist extends TestBase {
         openWishlistPage();
         Assert.assertFalse(getWishlistItems().isEmpty(), "TC-W20 pre-condition: wishlist must have at least one item");
 
-        // WHEN / THEN 
+        // WHEN / THEN
         try {
             removeWishlistItem(0);
             Assert.assertEquals(getWishlistItems().size(), 0, "TC-W20: Remove button must be clickable — layout is intact");
@@ -959,7 +960,7 @@ public class TC03_Wishlist extends TestBase {
         // WHEN
         clickHeartOnCard(0);
         //Thread.sleep(600);
-        
+
         // THEN
         Assert.assertEquals(wishlistBadgeCount(), 1,
                 "TC-W21: Badge should show 1 on mobile viewport");

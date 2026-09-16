@@ -34,3 +34,15 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+Screenshots/
+
+.gitignore
+
+.github/workflows/qodana_code_quality.yml
+
+test/java/commonTest/beforesuite
+
+qodana.yaml
+
+test-output
