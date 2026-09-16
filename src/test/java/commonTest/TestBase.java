@@ -22,7 +22,9 @@ public class TestBase {
     @BeforeMethod
     public void setupdriver() throws InterruptedException {
         driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        driver.manage().window().maximize(); 
         driver.get("https://surajkumar-ibm.github.io/Selenium-Miniproject-Application/");
 
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -32,7 +34,8 @@ public class TestBase {
     public void teardown(){
         driver.quit();
     }
-
+    
+ 
     public static void clickUntilLoaded(By clickLocator) {
 
         for (int i = 0; i < 5; i++) {
