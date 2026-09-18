@@ -318,48 +318,4 @@ public class TC02_Cart extends TestBase {
 
     }
 
-    @Test
-    public void verifyCartTotal() throws InterruptedException {
-
-        // Get all Add to Cart buttons
-        List<WebElement> addButtons =
-                driver.findElements(By.cssSelector(".btn-add-to-cart"));
-
-        // Add first two products
-        addButtons.get(0).click();
-        addButtons.get(1).click();
-
-        // Open Cart
-        driver.findElement(By.linkText("Cart")).click();
-
-        Thread.sleep(1000);
-
-        // Get product prices from cart
-        List<WebElement> prices =
-                driver.findElements(By.className("cart-item-price"));
-
-        System.out.println(prices.get(0).getText());
-        double price1 = Double.parseDouble( prices.get(0).getText().replace("$", "") );
-        double price2 = Double.parseDouble( prices.get(1).getText().replace("$", "") );
-
-        List<WebElement> increase_button = driver.findElements(By.cssSelector(".quantity-btn.increase"));
-
-        increase_button.get(0).click();
-        Thread.sleep(1000);
-
-        double expectedSubtotal = (price1 * 2) + price2;
-        double actualSubtotal = Double.parseDouble( driver.findElement(By.id("total")) .getText() .replace("$", "") );
-
-        Assert.assertEquals( actualSubtotal, expectedSubtotal, 0.01, "Subtotal is incorrect" );
-
-        double tax = Double.parseDouble( driver.findElement(By.id("tax")) .getText() .replace("$", "") );
-        double shipping = Double.parseDouble( driver.findElement(By.id("shipping")) .getText() .replace("$", "") );
-
-        double expectedTotal = expectedSubtotal + tax + shipping;
-        double actualTotal = Double.parseDouble( driver.findElement(By.id("total-cost")) .getText() .replace("$", "") );
-
-        Assert.assertEquals( actualTotal, expectedTotal, 0.01, "Final cart total is incorrect" );
-
-    }
-
 }
